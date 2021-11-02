@@ -314,7 +314,14 @@ public class RedEnemy extends MapComp{
     public void setPlayerPosition(int[] playArr) {
         this.x = playArr[0];
         this.y = playArr[1];
-    }    
+    }
+    public int getXCoOrdsREnemy() {
+        return this.x;
+    }
+
+    public int getYCoOrdsREnemy() {
+        return this.y;
+    }
     public void draw(PApplet app) {
         //handles graphics
         app.image(this.spritePrint, this.x, this.y);

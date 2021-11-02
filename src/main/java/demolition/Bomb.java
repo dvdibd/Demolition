@@ -188,7 +188,15 @@ public class Bomb {
             app.image(this.sprite, this.x, this.y); 
             if(explode == true){
                 app.image(this.center, this.x, this.y);
-
+                if((((yMapPos + 2)*(32)) == playerYPos) && (((xMapPos)*(32)) == playerXPos)) {
+                    
+                    if(this.killPlayer == true){
+                        //System.out.println("PLAYER");
+                        this.lives.changeLives();
+                        this.playerupdated.resetPlayerPosition(true);
+                        this.killPlayer = false;
+                    }
+                }
                 if((arr[yMapPos + 1][xMapPos] == ' ') || (arr[yMapPos + 1][xMapPos] == 'B')) {
                     app.image(this.vertical, this.x, this.y + 32);
 
