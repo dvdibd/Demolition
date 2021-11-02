@@ -42,9 +42,16 @@ public class Bomb {
     private readMap rm1;
     private Player playerupdated;
     private RedEnemy redupdated;
+    private int playerXPos;
+    private int playerYPos;
+    private boolean killPlayer;
+    private Lives lives;
     //public Player(int x, int y, PImage sprite, char[][] arr) {
-    public Bomb(Player player, readMap rm1, int x, int y, String str, int indx, PImage bombImage, PImage bombImage1, PImage bombImage2, PImage bombImage3, PImage bombImage4, PImage bombImage5, PImage bombImage6, PImage bombImage7, PImage bombImage8, PImage center, PImage endBottom, PImage endLeft, PImage endRight, PImage endTop, PImage horizontal, PImage vertical) {
+    public Bomb(Lives lives, Player player, readMap rm1, int x, int y, String str, int indx, PImage bombImage, PImage bombImage1, PImage bombImage2, PImage bombImage3, PImage bombImage4, PImage bombImage5, PImage bombImage6, PImage bombImage7, PImage bombImage8, PImage center, PImage endBottom, PImage endLeft, PImage endRight, PImage endTop, PImage horizontal, PImage vertical) {
     //public Player(int x, int y, PImage sprite) {
+        this.lives = lives;
+        this.playerXPos = 0;
+        this.playerYPos = 0;
         this.playerupdated = player;
         this.rm1 = rm1;
         this.str1 = str;
@@ -52,6 +59,7 @@ public class Bomb {
         this.x = x;
         this.y = y;
         this.timer = 0;
+        this.killPlayer = false;
         this.bombIndex = indx;
         this.explode = false;
         this.exploded = false;
@@ -123,17 +131,26 @@ public class Bomb {
                 //this.timer = 0;
                 
             } else if((this.timer > 119) && (this.timer < 171)){
+                if(this.timer == 122)
+                    this.killPlayer = true;
                 //System.out.println(this.timer);
                 this.sprite = this.bombImage8;
                 this.explode = true;
                 if(this.timer == 170){
                     this.timer = 0;
                     this.explode = false;
+                    
                     this.exploded = true;
                 }
             }
             this.timer++;
         }
+        this.playerXPos = playerupdated.getXCoOrds();
+        this.playerYPos = playerupdated.getYCoOrds() + 17;
+        //System.out.println("xxxxBomb " + this.x);
+        //System.out.println("yyyyBomb " + this.y);
+        //System.out.println("xxxxPlayer " + playerXPos);
+        //System.out.println("yyyyPlayer " + playerYPos);
     }
 
     public boolean isExploded() {
@@ -164,91 +181,112 @@ public class Bomb {
         //System.out.println("inside draw bomb: x and y = "+this.x+"   "+this.y);
         int xMapPos = this.x / 32;
         int yMapPos = ((this.y) / 32) -2;
+
         //System.out.println("xxxx" + xMapPos);
         //System.out.println("yyyy" + yMapPos);
         if(isExploded() == false){
             app.image(this.sprite, this.x, this.y); 
             if(explode == true){
-                /*
-                app.image(this.center, this.x, this.y);
-                System.out.println( "NEXT TILE:::" + arr[xMapPos + 1][yMapPos] + "AAA");
-                //System.out.println(arr[xMapPos + 1][yMapPos]);
-                if((arr[xMapPos + 1][yMapPos] == ' ') || (arr[xMapPos + 1][yMapPos] == 'B')) {                
-                    app.image(this.horizontalImg, this.x + 32, this.y);
-                    if(arr[xMapPos + 1][yMapPos] == 'B'){
-                        //System.out.println( "NEXT TILE:::" + arr[xMapPos + 1][yMapPos] + "AAA");
-                        //arr[xMapPos + 1][yMapPos] = ' ';
-                        rm1.setPos(this.x + 32, this.y, xMapPos + 1 , yMapPos, ' ');
-                        this.playerupdated.setPos(this.x +32, this.y, xMapPos + 1 , yMapPos, ' ');
-                        arr[xMapPos + 1][yMapPos] = ' ';
-                        //System.out.println( "XXXXXXXXXXXXXXX    " + this.x);
-                        //System.out.println( "YYYYYYYYYYYYYYY    " + this.y);
-                    } else if((arr[xMapPos + 2][yMapPos] == ' ') ){
-                        app.image(this.endRight, this.x + 64, this.y);
-                    }
-                }
-
-                if((arr[xMapPos][yMapPos + 1] == ' ') || (arr[xMapPos][yMapPos + 1] == 'B')) {  
-                    app.image(this.vertical, this.x, this.y + 32);
-                    //if((arr[xMapPos][yMapPos + 2] == ' ') || (arr[xMapPos][yMapPos + 2] == 'B')){
-                    app.image(this.endBottom, this.x, this.y + 64);
-                    //}
-                }
-                if((arr[xMapPos - 1][yMapPos] == ' ') || (arr[xMapPos - 1][yMapPos] == 'B')) {  
-                    app.image(this.horizontalImg, this.x - 32, this.y);
-                    if((arr[xMapPos - 2][yMapPos] == ' ') || (arr[xMapPos - 2][yMapPos] == 'B')){
-                        app.image(this.endLeft, this.x - 64, this.y);
-                    }
-                }
-                //if((arr[xMapPos][yMapPos] == ' ') && (arr[xMapPos][yMapPos] == 'B'))
-                //if((arr[xMapPos][yMapPos + 1] == ' ') && (arr[xMapPos][yMapPos + 1] == 'B')) {
-
-                //}
-                //if((arr[xMapPos][yMapPos] == ' ') && (arr[xMapPos][yMapPos] == 'B'))
-                if((arr[xMapPos][yMapPos - 1] == ' ') || (arr[xMapPos][yMapPos - 1] == 'B')) { 
-                    app.image(this.endTop, this.x, this.y - 32);
-                }*/
                 app.image(this.center, this.x, this.y);
 
                 if((arr[yMapPos + 1][xMapPos] == ' ') || (arr[yMapPos + 1][xMapPos] == 'B')) {
                     app.image(this.vertical, this.x, this.y + 32);
+
+                    if((((yMapPos + 3)*(32)) == playerYPos) && (((xMapPos)*(32)) == playerXPos)) {
+                        
+                        if(this.killPlayer == true){
+                            //System.out.println("PLAYER");
+                            this.lives.changeLives();
+                            this.playerupdated.resetPlayerPosition(true);
+                            this.killPlayer = false;
+                        }
+                    }
                     if(arr[yMapPos + 1][xMapPos] == 'B'){
                         rm1.setPos(this.x, this.y + 32, xMapPos , yMapPos + 1, ' ');
                         this.playerupdated.setPos(this.x, this.y + 32, xMapPos, yMapPos + 1 , ' ');
                         //this.redupdated.setPos(this.x, this.y + 32, xMapPos, yMapPos + 1 , ' ');
                         arr[yMapPos + 1][xMapPos] = ' ';
+                        
+                        /*
+                        System.out.println("xxxxBomb " + this.x);
+                        System.out.println("yyyyBomb " + this.y);
+                        System.out.println("xxxxPlayer " + playerXPos);
+                        System.out.println("yyyyPlayer " + playerYPos);*/
                     } else if((arr[yMapPos + 2][xMapPos] == ' ') || (arr[yMapPos + 2][xMapPos] == 'B') ){
                         app.image(this.endBottom, this.x, this.y + 64); 
-                        System.out.println("XXXXXX" + arr[yMapPos + 2][xMapPos]);
+                        //System.out.println("XXXXXX" + arr[yMapPos + 2][xMapPos]);
+                        //System.out.println((yMapPos + 4)*(32));
+                        //System.out.println(playerYPos);
+                        //this.redupdated.setPos(this.x, this.y + 64, xMapPos, yMapPos + 2 , ' ');
+                        if((((yMapPos + 4)*(32)) == playerYPos) && (((xMapPos)*(32)) == playerXPos)) {
+                            //System.out.println("died too");
+                            if(this.killPlayer == true){
+                                //System.out.println(this.timer);
+                                this.lives.changeLives();
+                                this.playerupdated.resetPlayerPosition(true);
+                                this.killPlayer = false;
+                            }
+                        } 
                         if(arr[yMapPos + 2][xMapPos] == 'B'){
                             //System.out.println("XXXXXX" + xMapPos);
                             //System.out.println("YYYYYY" + (yMapPos + 2));
                             rm1.setPos(this.x, this.y + 64, xMapPos , yMapPos + 2, ' ');
                             this.playerupdated.setPos(this.x, this.y + 64, xMapPos, yMapPos + 2 , ' ');
-
-                            //this.redupdated.setPos(this.x, this.y + 64, xMapPos, yMapPos + 2 , ' ');
-                            
+                           
                             arr[yMapPos + 2][xMapPos] = ' ';
+                            /*
+                            System.out.println("xxxxBomb " + this.x);
+                            System.out.println("yyyyBomb " + this.y);
+                            System.out.println("xxxxPlayer " + playerXPos);
+                            System.out.println("yyyyPlayer " + playerYPos);*/
                         }
                     }
                 }
 
                 if((arr[yMapPos][xMapPos + 1] == ' ') || (arr[yMapPos][xMapPos + 1] == 'B')) {                
                     app.image(this.horizontalImg, this.x + 32, this.y);
+                    if((((yMapPos + 2)*(32)) == playerYPos) && (((xMapPos + 1)*(32)) == playerXPos)) {
+                        
+                        if(this.killPlayer == true){
+                            //System.out.println("PLAYERXXX");
+                            this.lives.changeLives();
+                            this.playerupdated.resetPlayerPosition(true);
+                            this.killPlayer = false;
+                        }
+                    }
                     if(arr[yMapPos][xMapPos + 1] == 'B'){
                         rm1.setPos(this.x + 32, this.y, xMapPos + 1 , yMapPos, ' ');
                         this.playerupdated.setPos(this.x + 32, this.y, xMapPos + 1 , yMapPos, ' ');
                         //this.redupdated.setPos(this.x +32, this.y, xMapPos + 1 , yMapPos, ' ');
                         //arr[yMapPos + 1][xMapPos] = ' ';
                         arr[yMapPos][xMapPos + 1] = ' ';
+                        /*
+                        System.out.println("xxxxBomb " + this.x);
+                        System.out.println("yyyyBomb " + this.y);
+                        System.out.println("xxxxPlayer " + playerXPos);
+                        System.out.println("yyyyPlayer " + playerYPos);*/
                     } else if((arr[yMapPos][xMapPos + 2] == ' ') || (arr[yMapPos][xMapPos + 2] == 'B') || (xMapPos + 2) < 13){
                         app.image(this.endRight, this.x + 64, this.y);
+                        if((((yMapPos + 2)*(32)) == playerYPos) && (((xMapPos + 2)*(32)) == playerXPos)) {
+                            
+                            if(this.killPlayer == true){
+                                //System.out.println("PLAYERXXX");
+                                this.lives.changeLives();
+                                this.playerupdated.resetPlayerPosition(true);
+                                this.killPlayer = false;
+                            }
+                        }
                         if(arr[yMapPos][xMapPos + 2] == 'B'){
                             rm1.setPos(this.x + 64, this.y, xMapPos + 2 , yMapPos, ' ');
                             this.playerupdated.setPos(this.x + 64, this.y, xMapPos + 2 , yMapPos, ' ');
                             //this.redupdated.setPos(this.x + 64, this.y, xMapPos + 2 , yMapPos, ' ');
                             //arr[yMapPos + 2][xMapPos] = ' ';
                             arr[yMapPos][xMapPos + 2] = ' ';
+                            /*
+                            System.out.println("xxxxBomb " + this.x);
+                            System.out.println("yyyyBomb " + this.y);
+                            System.out.println("xxxxPlayer " + playerXPos);
+                            System.out.println("yyyyPlayer " + playerYPos);*/
                         }
                     }
                 }
@@ -256,16 +294,44 @@ public class Bomb {
                 if((arr[yMapPos][xMapPos - 1] == ' ') || (arr[yMapPos][xMapPos - 1] == 'B')) {  
                     app.image(this.horizontalImg, this.x - 32, this.y);
                     //app.image(this.endLeft, this.x - 64, this.y);
+                    if((((yMapPos + 2)*(32)) == playerYPos) && (((xMapPos - 1)*(32)) == playerXPos)) {
+                        
+                        if(this.killPlayer == true){
+                            //System.out.println("PLAYERXXX");
+                            this.lives.changeLives();
+                            this.playerupdated.resetPlayerPosition(true);
+                            this.killPlayer = false;
+                        }
+                    }
                     if(arr[yMapPos][xMapPos - 1] == 'B'){
                         rm1.setPos(this.x - 32, this.y, xMapPos - 1 , yMapPos, ' ');
                         this.playerupdated.setPos(this.x - 32, this.y, xMapPos - 1 , yMapPos, ' ');
                         arr[xMapPos - 1][yMapPos] = ' ';
+                        /*
+                        System.out.println("xxxxBomb " + this.x);
+                        System.out.println("yyyyBomb " + this.y);
+                        System.out.println("xxxxPlayer " + playerXPos);
+                        System.out.println("yyyyPlayer " + playerYPos);*/
                     } else if((arr[yMapPos][xMapPos - 2] == ' ') || (arr[yMapPos][xMapPos - 2] == 'B') ){
                         app.image(this.endLeft, this.x - 64, this.y);
+                        if((((yMapPos + 2)*(32)) == playerYPos) && (((xMapPos - 2)*(32)) == playerXPos)) {
+                            
+                            if(this.killPlayer == true){
+                                //System.out.println("PLAYERXXX");
+                                this.lives.changeLives();
+                                this.playerupdated.resetPlayerPosition(true);
+                                this.killPlayer = false;
+                            }
+                        }
                         if(arr[yMapPos][xMapPos - 2] == 'B'){
                             rm1.setPos(this.x - 64, this.y, xMapPos - 2 , yMapPos, ' ');
                             this.playerupdated.setPos(this.x - 64, this.y, xMapPos - 2 , yMapPos, ' ');
                             arr[xMapPos - 2][yMapPos] = ' ';
+                            /*
+                            System.out.println("xxxxBomb " + this.x);
+                            System.out.println("yyyyBomb " + this.y);
+                            System.out.println("xxxxPlayer " + playerXPos);
+                            System.out.println("yyyyPlayer " + playerYPos);*/
                         }
                     }
                 }
@@ -273,11 +339,26 @@ public class Bomb {
 
                 if((arr[yMapPos - 1][xMapPos] == ' ') || (arr[yMapPos - 1][xMapPos] == 'B')) {
                     app.image(this.endTop, this.x, this.y - 32);
+                    if((((yMapPos + 1)*(32)) == playerYPos) && (((xMapPos)*(32)) == playerXPos)) {
+                        //System.out.println("died :(");
+                        //System.out.println(this.killPlayer);
+                        if(this.killPlayer == true){
+                            //System.out.println(this.timer);
+                            this.lives.changeLives();
+                            this.playerupdated.resetPlayerPosition(true);
+                            this.killPlayer = false;
+                        }
+                    }
                     if(arr[yMapPos - 1][xMapPos] == 'B'){
                         rm1.setPos(this.x, this.y - 32, xMapPos , yMapPos - 1, ' ');
                         this.playerupdated.setPos(this.x, this.y - 32, xMapPos, yMapPos - 1 , ' ');
                         //this.redupdated.setPos(this.x, this.y - 32, xMapPos, yMapPos - 1 , ' ');
                         arr[yMapPos - 1][xMapPos] = ' ';
+                        /*
+                        System.out.println("xxxxBomb " + this.x);
+                        System.out.println("yyyyBomb " + this.y);
+                        System.out.println("xxxxPlayer " + playerXPos);
+                        System.out.println("yyyyPlayer " + playerYPos);*/
                     }
                 }
             }

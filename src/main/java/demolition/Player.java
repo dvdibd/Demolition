@@ -315,10 +315,20 @@ public class Player extends MapComp{
                 pos1++;
             }
     }
+    public void resetPlayerPosition(boolean playerReset) {
+        if(playerReset = true) {
+            setPlayerPosition(rm1.getPlayArr());
+            rm1.setParaForLevel();
+            setPlayerMap(rm1.getStringArr());
+        }
+        
+    }
     public void setPlayerPosition(int[] playArr) {
         this.x = playArr[0];
         this.y = playArr[1];
+        
     }
+
     public void draw(PApplet app) {
         //handles graphics
         if(goalReached == false)

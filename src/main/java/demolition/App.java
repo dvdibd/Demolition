@@ -251,7 +251,7 @@ public class App extends PApplet {
             }
         }
         if(this.setBomb == true){
-            bombs.add(new Bomb(this.player, this.rm, this.bombXCoords, this.bombYCoords, this.rm.getStringArr(), bombs.size(), bombImage, bombImage1, bombImage2, bombImage3, bombImage4, bombImage5, bombImage6, bombImage7, bombImage8, center, endBottom, endLeft, endRight, endTop, horizontal, vertical));
+            bombs.add(new Bomb(this.lives, this.player, this.rm, this.bombXCoords, this.bombYCoords, this.rm.getStringArr(), bombs.size(), bombImage, bombImage1, bombImage2, bombImage3, bombImage4, bombImage5, bombImage6, bombImage7, bombImage8, center, endBottom, endLeft, endRight, endTop, horizontal, vertical));
             //System.out.println("size    ==    " + bombs.size());
             this.bombAdded = true;
             this.setBomb = false;

@@ -10,19 +10,19 @@ demolition/BombObject.java
  demolition.BombObject
 demolition/Wall.java
  demolition.Wall
-demolition/App.java
- demolition.App
+demolition/Lives.java
+ demolition.Lives
 demolition/MapComp.java
  demolition.MapComp
-demolition/Bomb.java
- demolition.Bomb
+demolition/Empty.java
+ demolition.Empty
 demolition/RedEnemy.java
  demolition.RedEnemy
 demolition/Broken.java
  demolition.Broken
-demolition/Lives.java
- demolition.Lives
-demolition/Empty.java
- demolition.Empty
+demolition/App.java
+ demolition.App
+demolition/Bomb.java
+ demolition.Bomb
 demolition/Player.java
  demolition.Player
