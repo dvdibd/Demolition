@@ -14,6 +14,7 @@ public class App extends PApplet {
 
     private Player player;
     private Timer timer;
+    private Lives lives;
     private YellowEnemy enemyY;
     private RedEnemy enemyR;
     private Wall wall;
@@ -182,7 +183,8 @@ public class App extends PApplet {
             enemyRPos = rm.getEnemyRArr();
             this.enemyR = new RedEnemy(enemyRPos[0], enemyRPos[1], this.loadImage("src/main/resources/red_enemy/red_left1.png"), this.loadImage("src/main/resources/red_enemy/red_left2.png"), this.loadImage("src/main/resources/red_enemy/red_left3.png"), this.loadImage("src/main/resources/red_enemy/red_left4.png"), this.loadImage("src/main/resources/red_enemy/red_right1.png"), this.loadImage("src/main/resources/red_enemy/red_right2.png"), this.loadImage("src/main/resources/red_enemy/red_right3.png"), this.loadImage("src/main/resources/red_enemy/red_right4.png"), this.loadImage("src/main/resources/red_enemy/red_up1.png"), this.loadImage("src/main/resources/red_enemy/red_up2.png"), this.loadImage("src/main/resources/red_enemy/red_up3.png"), this.loadImage("src/main/resources/red_enemy/red_up4.png"), this.loadImage("src/main/resources/red_enemy/red_down1.png"), this.loadImage("src/main/resources/red_enemy/red_down2.png"), this.loadImage("src/main/resources/red_enemy/red_down3.png"), this.loadImage("src/main/resources/red_enemy/red_down4.png"), mapstr);
         }*/
-        this.timer = new Timer(250, 16, this.font, this.loadImage("src/main/resources/icons/clock.png"), getTime());
+        this.timer = new Timer(this.rm, 250, 16, this.font, this.loadImage("src/main/resources/icons/clock.png"), getTime());
+        this.lives = new Lives(this.rm, 150, 16, this.font, this.loadImage("src/main/resources/icons/player.png"));
         //this.timer = new Timer(250, 16, this.font, bombImage, getTime());
         //System.out.println(this.player.getPlayerTime());
         //this.bombs.add(new Bomb(250, 250, bombImage));
@@ -205,6 +207,7 @@ public class App extends PApplet {
                 this.mapTiles[i][j].tick();
 
         this.timer.tick();
+        this.lives.tick();
         if(this.bombAdded == true){
             for (Bomb bombCurr : this.bombs) {
                 bombCurr.tick();
@@ -239,6 +242,7 @@ public class App extends PApplet {
 
         this.timer.setTime(getTime());
         this.timer.draw(this);
+        this.lives.draw(this);
         if(this.bombAdded == true){
             for (Bomb bombCurr : this.bombs) {
                 bombCurr.draw(this);
@@ -254,6 +258,7 @@ public class App extends PApplet {
             
         }
         this.player.draw(this);
+        //this.timer.setTime(getTime());
         //this.bomb.draw(this);
         //System.out.println(getTime());
         //this.rm.setMap(this.mapstrUpdated);

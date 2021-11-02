@@ -66,6 +66,7 @@ public class readMap {
     private boolean hasYEnemy = false;
     private boolean hasREnemy = false;
     private boolean playerStatus = false;
+    private boolean levelChanged = false;
     private int levelTime;
     private int levels;
     private int currLevel = 0;
@@ -212,10 +213,18 @@ public class readMap {
     public boolean hasREnemy() {
         return hasREnemy;
     }
+    public boolean hasLevelChanged() {
+        boolean change = levelChanged;
+        levelChanged = false;
+        return change;
+
+    }
 
     /*public int setPlayerLives() {
 
     }*/
+
+
 
     public void setPlayerLevel(boolean changeLevel) {
         if(changeLevel == true){
@@ -223,6 +232,7 @@ public class readMap {
                 
                 currLevel = currLevel + 1;
                 System.out.println("GOALLLLLLLLLLL  bjbhjbhj " + currLevel);
+                levelChanged = true;
             }
         } else
             currLevel = currLevel;
@@ -336,5 +346,7 @@ public class readMap {
     public void setMap(String updated) {
         updatedMap = updated;
     }
-
+    public int getLevelTime() {
+        return levelTime;
+    }
 }

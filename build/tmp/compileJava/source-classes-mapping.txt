@@ -1,13 +1,17 @@
 demolition/readMap.java
  demolition.readMap
-demolition/Wall.java
- demolition.Wall
-demolition/App.java
- demolition.App
 demolition/Goal.java
  demolition.Goal
 demolition/YellowEnemy.java
  demolition.YellowEnemy
+demolition/Timer.java
+ demolition.Timer
+demolition/BombObject.java
+ demolition.BombObject
+demolition/Wall.java
+ demolition.Wall
+demolition/App.java
+ demolition.App
 demolition/MapComp.java
  demolition.MapComp
 demolition/Bomb.java
@@ -16,11 +20,9 @@ demolition/RedEnemy.java
  demolition.RedEnemy
 demolition/Broken.java
  demolition.Broken
+demolition/Lives.java
+ demolition.Lives
 demolition/Empty.java
  demolition.Empty
-demolition/Timer.java
- demolition.Timer
 demolition/Player.java
  demolition.Player
-demolition/BombObject.java
- demolition.BombObject
