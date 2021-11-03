@@ -42,6 +42,7 @@ public class YellowEnemy extends MapComp{
     private PImage spriteP2;
     private PImage spriteP3;
     private PImage spriteP4;
+    private boolean YEnemyDied;  
     public YellowEnemy( int x, int y, PImage spriteL1, PImage spriteL2, PImage spriteL3, PImage spriteL4, PImage spriteR1, PImage spriteR2, PImage spriteR3, PImage spriteR4, PImage spriteU1, PImage spriteU2, PImage spriteU3, PImage spriteU4, PImage spriteP1, PImage spriteP2, PImage spriteP3, PImage spriteP4, String str1) {
         this.spriteL1 = spriteL1;
         this.spriteL2 = spriteL2;
@@ -62,7 +63,7 @@ public class YellowEnemy extends MapComp{
         this.moveTypeSprite = 0;
         this.spritePrint = spriteP4;
         this.spriteCounter = 0;        
-        
+        this.YEnemyDied = false;
         this.x = x;
         this.y = y;
         this.move = 0;
@@ -236,42 +237,13 @@ public class YellowEnemy extends MapComp{
     public int getYCoOrdsYEnemy() {
         return this.y;
     }
-/*
-    public void setPlayerMap(String str2) {
-        int pos1=0;
-        for(int i = 0; i < 13; i++)
-            for(int j = 0; j < 15; j++) {
-                //pos1 = (15*i)+j;
-                arr[i][j] = str2.charAt(pos1);
-                if(this.firstFrame == 0){
-                    if(arr[i][j] == 'P'){
-                        this.playerInitXPos = i;
-                        this.playerInitYPos = j+2;
-                    } else if(arr[i][j] == 'G'){
-                        this.goalInitXPos = i;
-                        this.goalInitYPos = j+2;
-                    }
-                }
-
-
-                //System.out.println(arr[i][j]);
-                pos1++;
-            }
+    public void setIfYEnemyDied(boolean YState) {
+        if(YState == true)
+            this.YEnemyDied = true;
     }
-    public void resetPlayerPosition(boolean playerReset) {
-        if(playerReset = true) {
-            setPlayerPosition(rm1.getPlayArr());
-            rm1.setParaForLevel();
-            setPlayerMap(rm1.getStringArr());
-        }
-        
+    public boolean getIfYEnemyDied() {
+        return this.YEnemyDied;
     }
-    public void setPlayerPosition(int[] playArr) {
-        this.x = playArr[0];
-        this.y = playArr[1];
-        
-    }
-*/
     public void draw(PApplet app) {
         //handles graphics
         app.image(this.spritePrint, this.x, this.y);

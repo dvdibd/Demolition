@@ -74,7 +74,11 @@ public class readMap {
     private String updatedMap = "";
     private String levelPath;
     private int lives = 0;
-    public readMap( JSONObject json1, PImage wallImage , PImage goal, PImage emptyPic, PImage broken, PImage yellow1, PImage yellow2, PImage yellow3, PImage yellow4, PImage yellow5, PImage yellow6, PImage yellow7, PImage yellow8, PImage yellow9, PImage yellow10, PImage yellow11, PImage yellow12, PImage yellow13, PImage yellow14, PImage yellow15, PImage yellow16, PImage red1, PImage red2, PImage red3, PImage red4, PImage red5, PImage red6, PImage red7, PImage red8, PImage red9, PImage red10, PImage red11, PImage red12, PImage red13, PImage red14, PImage red15, PImage red16) {
+    private EndScreen endScreen;
+    private boolean sendEnd;
+    public readMap(EndScreen endScreen, JSONObject json1, PImage wallImage , PImage goal, PImage emptyPic, PImage broken, PImage yellow1, PImage yellow2, PImage yellow3, PImage yellow4, PImage yellow5, PImage yellow6, PImage yellow7, PImage yellow8, PImage yellow9, PImage yellow10, PImage yellow11, PImage yellow12, PImage yellow13, PImage yellow14, PImage yellow15, PImage yellow16, PImage red1, PImage red2, PImage red3, PImage red4, PImage red5, PImage red6, PImage red7, PImage red8, PImage red9, PImage red10, PImage red11, PImage red12, PImage red13, PImage red14, PImage red15, PImage red16) {
+        this.sendEnd = sendEnd;
+        this.endScreen = endScreen;
         this.yellow1 = yellow1;
         this.yellow2 = yellow2;
         this.yellow3 = yellow3;
@@ -226,22 +230,28 @@ public class readMap {
 
     }
 
-    /*public int setPlayerLives() {
-
-    }*/
 
 
 
+    //public void setGameEnd(boolean gameSet)
     public void setPlayerLevel(boolean changeLevel) {
         if(changeLevel == true){
-            if(currLevel < (levels + 1 )){
+            if((currLevel + 1) < (levels + 1 )){
                 
                 currLevel = currLevel + 1;
-                //System.out.println("GOALLLLLLLLLLL  bjbhjbhj " + currLevel);
+                System.out.println("GOALLLLLLLLLLL  bjbhjbhj " + currLevel);
                 levelChanged = true;
+            } 
+            if((currLevel + 1) == (levels + 1 )){
+                System.out.println("GOALLLLLLLLLLL  bjbhjbhj entered");
+                this.sendEnd = true;
+                this.endScreen.endGame(true);
             }
         } else
             currLevel = currLevel;
+    }
+    public boolean setEnd() {
+        return this.sendEnd;
     }
     public void setParaForLevel() {
         levelPath = json1.getJSONArray("levels").getJSONObject(currLevel).getString("path");

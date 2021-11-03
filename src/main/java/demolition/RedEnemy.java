@@ -44,7 +44,8 @@ public class RedEnemy extends MapComp{
     private PImage spriteP1;
     private PImage spriteP2;
     private PImage spriteP3;
-    private PImage spriteP4;    
+    private PImage spriteP4;
+    private boolean REnemyDied;  
     public RedEnemy(int x, int y, PImage spriteL1, PImage spriteL2, PImage spriteL3, PImage spriteL4, PImage spriteR1, PImage spriteR2, PImage spriteR3, PImage spriteR4, PImage spriteU1, PImage spriteU2, PImage spriteU3, PImage spriteU4, PImage spriteP1, PImage spriteP2, PImage spriteP3, PImage spriteP4, String str1) {
         this.spriteL1 = spriteL1;
         this.spriteL2 = spriteL2;
@@ -65,7 +66,7 @@ public class RedEnemy extends MapComp{
         this.moveTypeSprite = 0;
         this.spritePrint = spriteP4;
         this.spriteCounter = 0;        
-                
+        this.REnemyDied = false;
         
         this.x = x;
         this.y = y;
@@ -321,6 +322,14 @@ public class RedEnemy extends MapComp{
 
     public int getYCoOrdsREnemy() {
         return this.y;
+    }
+
+    public void setIfREnemyDied(boolean RState) {
+        if(RState == true)
+            this.REnemyDied = true;
+    }
+    public boolean getIfREnemyDied() {
+        return this.REnemyDied;
     }
     public void draw(PApplet app) {
         //handles graphics

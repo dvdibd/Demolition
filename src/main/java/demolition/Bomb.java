@@ -46,9 +46,25 @@ public class Bomb {
     private int playerYPos;
     private boolean killPlayer;
     private Lives lives;
+    private YouLose loseSend;
+    private Timer timerMain;
+    private YellowEnemy enemyY;
+    private RedEnemy enemyR;
+    private int yEnemyPosX;
+    private int yEnemyPosY;
+    private int rEnemyPosX;
+    private int rEnemyPosY;
     //public Player(int x, int y, PImage sprite, char[][] arr) {
-    public Bomb(Lives lives, Player player, readMap rm1, int x, int y, String str, int indx, PImage bombImage, PImage bombImage1, PImage bombImage2, PImage bombImage3, PImage bombImage4, PImage bombImage5, PImage bombImage6, PImage bombImage7, PImage bombImage8, PImage center, PImage endBottom, PImage endLeft, PImage endRight, PImage endTop, PImage horizontal, PImage vertical) {
+    public Bomb(YellowEnemy enemyY, RedEnemy enemyR, Timer timer, YouLose loseSend, Lives lives, Player player, readMap rm1, int x, int y, String str, int indx, PImage bombImage, PImage bombImage1, PImage bombImage2, PImage bombImage3, PImage bombImage4, PImage bombImage5, PImage bombImage6, PImage bombImage7, PImage bombImage8, PImage center, PImage endBottom, PImage endLeft, PImage endRight, PImage endTop, PImage horizontal, PImage vertical) {
     //public Player(int x, int y, PImage sprite) {
+        this.enemyY = enemyY;
+        this.enemyR = enemyR;
+        this.yEnemyPosX = 0;
+        this.yEnemyPosY = 0;
+        this.rEnemyPosX = 0;
+        this.rEnemyPosY = 0;
+        this.timerMain = timer;
+        this.loseSend = loseSend;
         this.lives = lives;
         this.playerXPos = 0;
         this.playerYPos = 0;
@@ -193,8 +209,30 @@ public class Bomb {
                     if(this.killPlayer == true){
                         //System.out.println("PLAYER");
                         this.lives.changeLives();
-                        this.playerupdated.resetPlayerPosition(true);
+                        if(this.lives.getLives() > 0){
+                            this.playerupdated.resetPlayerPosition(true);
+                            //this.timerMain.resetTime(true);
+                        } else {
+                            this.loseSend.endGame(true);
+                        }
                         this.killPlayer = false;
+                    }
+                }
+                if(this.rm1.getHasREnemy() == true){
+                    this.rEnemyPosX = this.rm1.getEnemyR().getXCoOrdsREnemy();
+                    this.rEnemyPosY = this.rm1.getEnemyR().getYCoOrdsREnemy();
+                    //System.out.println("REDENEMY");
+                    if((this.rEnemyPosY == (this.y - 17)) && (this.rEnemyPosX == this.x)){
+                        System.out.println("REDENEMY");
+                        this.rm1.getEnemyR().setIfREnemyDied(true);
+                    }
+                }
+                if(this.rm1.getHasYEnemy() == true){
+                    this.yEnemyPosX = this.rm1.getEnemyY().getXCoOrdsYEnemy();
+                    this.yEnemyPosY = this.rm1.getEnemyY().getYCoOrdsYEnemy();
+                    if((this.yEnemyPosX == this.x) && (this.yEnemyPosY == (this.y - 17))){
+                        System.out.println("REDENEMY");
+                        this.rm1.getEnemyY().setIfYEnemyDied(true);
                     }
                 }
                 if((arr[yMapPos + 1][xMapPos] == ' ') || (arr[yMapPos + 1][xMapPos] == 'B')) {
@@ -205,8 +243,30 @@ public class Bomb {
                         if(this.killPlayer == true){
                             //System.out.println("PLAYER");
                             this.lives.changeLives();
-                            this.playerupdated.resetPlayerPosition(true);
+                            if(this.lives.getLives() > 0){
+                                this.playerupdated.resetPlayerPosition(true);
+                                //this.timerMain.resetTime(true);
+                            } else {
+                                this.loseSend.endGame(true);
+                            }
                             this.killPlayer = false;
+                        }
+                    }
+                    if(this.rm1.getHasREnemy() == true){
+                        this.rEnemyPosX = this.rm1.getEnemyR().getXCoOrdsREnemy();
+                        this.rEnemyPosY = this.rm1.getEnemyR().getYCoOrdsREnemy();
+                        //System.out.println("REDENEMY");
+                        if((this.rEnemyPosX == this.x) && (this.rEnemyPosY == (this.y - 17))){
+                            System.out.println("REDENEMY");
+                            this.rm1.getEnemyR().setIfREnemyDied(true);
+                        }
+                    }
+                    if(this.rm1.getHasYEnemy() == true){
+                        this.yEnemyPosX = this.rm1.getEnemyY().getXCoOrdsYEnemy();
+                        this.yEnemyPosY = this.rm1.getEnemyY().getYCoOrdsYEnemy();
+                        if((this.yEnemyPosX == this.x) && (this.yEnemyPosY == (this.y - 17))){
+                            System.out.println("REDENEMY");
+                            this.rm1.getEnemyY().setIfYEnemyDied(true);
                         }
                     }
                     if(arr[yMapPos + 1][xMapPos] == 'B'){
@@ -231,10 +291,32 @@ public class Bomb {
                             if(this.killPlayer == true){
                                 //System.out.println(this.timer);
                                 this.lives.changeLives();
-                                this.playerupdated.resetPlayerPosition(true);
+                                if(this.lives.getLives() > 0){
+                                    this.playerupdated.resetPlayerPosition(true);
+                                    //this.timerMain.resetTime(true);
+                                } else {
+                                    this.loseSend.endGame(true);
+                                }
                                 this.killPlayer = false;
                             }
                         } 
+                        if(this.rm1.getHasREnemy() == true){
+                            this.rEnemyPosX = this.rm1.getEnemyR().getXCoOrdsREnemy();
+                            this.rEnemyPosY = this.rm1.getEnemyR().getYCoOrdsREnemy();
+                            //System.out.println("REDENEMY");
+                            if((this.rEnemyPosX == this.x) && (this.rEnemyPosY == (this.y - 17))){
+                                System.out.println("REDENEMY");
+                                this.rm1.getEnemyR().setIfREnemyDied(true);
+                            }
+                        }
+                        if(this.rm1.getHasYEnemy() == true){
+                            this.yEnemyPosX = this.rm1.getEnemyY().getXCoOrdsYEnemy();
+                            this.yEnemyPosY = this.rm1.getEnemyY().getYCoOrdsYEnemy();
+                            if((this.yEnemyPosX == this.x) && (this.yEnemyPosY == (this.y - 17))){
+                                System.out.println("REDENEMY");
+                                this.rm1.getEnemyY().setIfYEnemyDied(true);
+                            }
+                        }
                         if(arr[yMapPos + 2][xMapPos] == 'B'){
                             //System.out.println("XXXXXX" + xMapPos);
                             //System.out.println("YYYYYY" + (yMapPos + 2));
@@ -258,8 +340,30 @@ public class Bomb {
                         if(this.killPlayer == true){
                             //System.out.println("PLAYERXXX");
                             this.lives.changeLives();
-                            this.playerupdated.resetPlayerPosition(true);
+                            if(this.lives.getLives() > 0){
+                                this.playerupdated.resetPlayerPosition(true);
+                                //this.timerMain.resetTime(true);
+                            } else {
+                                this.loseSend.endGame(true);
+                            }
                             this.killPlayer = false;
+                        }
+                    }
+                    if(this.rm1.getHasREnemy() == true){
+                        this.rEnemyPosX = this.rm1.getEnemyR().getXCoOrdsREnemy();
+                        this.rEnemyPosY = this.rm1.getEnemyR().getYCoOrdsREnemy();
+                        //System.out.println("REDENEMY");
+                        if((this.rEnemyPosX == ((xMapPos + 1)*(32))) && (this.rEnemyPosY == (this.y - 17))){
+                            System.out.println("REDENEMY");
+                            this.rm1.getEnemyR().setIfREnemyDied(true);
+                        }
+                    }
+                    if(this.rm1.getHasYEnemy() == true){
+                        this.yEnemyPosX = this.rm1.getEnemyY().getXCoOrdsYEnemy();
+                        this.yEnemyPosY = this.rm1.getEnemyY().getYCoOrdsYEnemy();
+                        if((this.yEnemyPosX == this.x) && (this.yEnemyPosY == (this.y - 17))){
+                            System.out.println("REDENEMY");
+                            this.rm1.getEnemyY().setIfYEnemyDied(true);
                         }
                     }
                     if(arr[yMapPos][xMapPos + 1] == 'B'){
@@ -280,8 +384,30 @@ public class Bomb {
                             if(this.killPlayer == true){
                                 //System.out.println("PLAYERXXX");
                                 this.lives.changeLives();
-                                this.playerupdated.resetPlayerPosition(true);
+                                if(this.lives.getLives() > 0){
+                                    this.playerupdated.resetPlayerPosition(true);
+                                    //this.timerMain.resetTime(true);
+                                } else {
+                                    this.loseSend.endGame(true);
+                                }
                                 this.killPlayer = false;
+                            }
+                        }
+                        if(this.rm1.getHasREnemy() == true){
+                            this.rEnemyPosX = this.rm1.getEnemyR().getXCoOrdsREnemy();
+                            this.rEnemyPosY = this.rm1.getEnemyR().getYCoOrdsREnemy();
+                            //System.out.println("REDENEMY");
+                            if((this.rEnemyPosX == this.x) && (this.rEnemyPosY == (this.y - 17))){
+                                System.out.println("REDENEMY");
+                                this.rm1.getEnemyR().setIfREnemyDied(true);
+                            }
+                        }
+                        if(this.rm1.getHasYEnemy() == true){
+                            this.yEnemyPosX = this.rm1.getEnemyY().getXCoOrdsYEnemy();
+                            this.yEnemyPosY = this.rm1.getEnemyY().getYCoOrdsYEnemy();
+                            if((this.yEnemyPosX == this.x) && (this.yEnemyPosY == (this.y - 17))){
+                                System.out.println("REDENEMY");
+                                this.rm1.getEnemyY().setIfYEnemyDied(true);
                             }
                         }
                         if(arr[yMapPos][xMapPos + 2] == 'B'){
@@ -307,8 +433,30 @@ public class Bomb {
                         if(this.killPlayer == true){
                             //System.out.println("PLAYERXXX");
                             this.lives.changeLives();
-                            this.playerupdated.resetPlayerPosition(true);
+                            if(this.lives.getLives() > 0){
+                                this.playerupdated.resetPlayerPosition(true);
+                                //this.timerMain.resetTime(true);
+                            } else {
+                                this.loseSend.endGame(true);
+                            }
                             this.killPlayer = false;
+                        }
+                    }
+                    if(this.rm1.getHasREnemy() == true){
+                        this.rEnemyPosX = this.rm1.getEnemyR().getXCoOrdsREnemy();
+                        this.rEnemyPosY = this.rm1.getEnemyR().getYCoOrdsREnemy();
+                        //System.out.println("REDENEMY");
+                        if((this.rEnemyPosX == this.x) && (this.rEnemyPosY == (this.y - 17))){
+                            System.out.println("REDENEMY");
+                            this.rm1.getEnemyR().setIfREnemyDied(true);
+                        }
+                    }
+                    if(this.rm1.getHasYEnemy() == true){
+                        this.yEnemyPosX = this.rm1.getEnemyY().getXCoOrdsYEnemy();
+                        this.yEnemyPosY = this.rm1.getEnemyY().getYCoOrdsYEnemy();
+                        if((this.yEnemyPosX == this.x) && (this.yEnemyPosY == (this.y - 17))){
+                            System.out.println("REDENEMY");
+                            this.rm1.getEnemyY().setIfYEnemyDied(true);
                         }
                     }
                     if(arr[yMapPos][xMapPos - 1] == 'B'){
@@ -327,8 +475,30 @@ public class Bomb {
                             if(this.killPlayer == true){
                                 //System.out.println("PLAYERXXX");
                                 this.lives.changeLives();
-                                this.playerupdated.resetPlayerPosition(true);
+                                if(this.lives.getLives() > 0){
+                                    this.playerupdated.resetPlayerPosition(true);
+                                    //this.timerMain.resetTime(true);
+                                } else {
+                                    this.loseSend.endGame(true);
+                                }
                                 this.killPlayer = false;
+                            }
+                        }
+                        if(this.rm1.getHasREnemy() == true){
+                            this.rEnemyPosX = this.rm1.getEnemyR().getXCoOrdsREnemy();
+                            this.rEnemyPosY = this.rm1.getEnemyR().getYCoOrdsREnemy();
+                            //System.out.println("REDENEMY");
+                            if((this.rEnemyPosX == this.x) && (this.rEnemyPosY == (this.y - 17))){
+                                System.out.println("REDENEMY");
+                                this.rm1.getEnemyR().setIfREnemyDied(true);
+                            }
+                        }
+                        if(this.rm1.getHasYEnemy() == true){
+                            this.yEnemyPosX = this.rm1.getEnemyY().getXCoOrdsYEnemy();
+                            this.yEnemyPosY = this.rm1.getEnemyY().getYCoOrdsYEnemy();
+                            if((this.yEnemyPosX == this.x) && (this.yEnemyPosY == (this.y - 17))){
+                                System.out.println("REDENEMY");
+                                this.rm1.getEnemyY().setIfYEnemyDied(true);
                             }
                         }
                         if(arr[yMapPos][xMapPos - 2] == 'B'){
@@ -353,8 +523,29 @@ public class Bomb {
                         if(this.killPlayer == true){
                             //System.out.println(this.timer);
                             this.lives.changeLives();
-                            this.playerupdated.resetPlayerPosition(true);
+                            if(this.lives.getLives() > 0){
+                                this.playerupdated.resetPlayerPosition(true);
+                                //this.timerMain.resetTime(true);
+                            } else {
+                                this.loseSend.endGame(true);
+                            }
                             this.killPlayer = false;
+                        }
+                    }
+                    if(this.rm1.getHasREnemy() == true){
+                        this.rEnemyPosX = this.rm1.getEnemyR().getXCoOrdsREnemy();
+                        this.rEnemyPosY = this.rm1.getEnemyR().getYCoOrdsREnemy();
+                        if((this.rEnemyPosX == this.x) && (this.rEnemyPosY == (this.y - 17))){
+                            System.out.println("REDENEMY");
+                            this.rm1.getEnemyR().setIfREnemyDied(true);
+                        }
+                    }
+                    if(this.rm1.getHasYEnemy() == true){
+                        this.yEnemyPosX = this.rm1.getEnemyY().getXCoOrdsYEnemy();
+                        this.yEnemyPosY = this.rm1.getEnemyY().getYCoOrdsYEnemy();
+                        if((this.yEnemyPosX == this.x) && (this.yEnemyPosY == (this.y - 17))){
+                            System.out.println("REDENEMY");
+                            this.rm1.getEnemyY().setIfYEnemyDied(true);
                         }
                     }
                     if(arr[yMapPos - 1][xMapPos] == 'B'){

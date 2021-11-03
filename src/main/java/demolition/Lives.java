@@ -24,7 +24,9 @@ public class Lives{
     public void tick() {
 
     }
-
+    public int getLives() {
+        return lives;
+    }
     public void changeLives(){
         //if(status == true) boolean status
         lives = lives-1;

@@ -16,10 +16,14 @@ demolition/MapComp.java
  demolition.MapComp
 demolition/Bomb.java
  demolition.Bomb
+demolition/YouLose.java
+ demolition.YouLose
 demolition/RedEnemy.java
  demolition.RedEnemy
 demolition/Broken.java
  demolition.Broken
+demolition/EndScreen.java
+ demolition.EndScreen
 demolition/Lives.java
  demolition.Lives
 demolition/Empty.java

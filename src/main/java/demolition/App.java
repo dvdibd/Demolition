@@ -15,10 +15,11 @@ public class App extends PApplet {
     private Player player;
     private Timer timer;
     private Lives lives;
+    private EndScreen endScreen;
     private YellowEnemy enemyY;
     private RedEnemy enemyR;
     private Wall wall;
-    
+    private YouLose loseScreen;
     private MapComp[][] mapTiles;
     private char[][] maparr;
     private String mapstr;
@@ -157,7 +158,9 @@ public class App extends PApplet {
         JSONObject json1 = loadJSONObject("config.json");
         //this.bombs.add(new Bomb(400, 210, bombImage));
         //readMap rm = new readMap(json1, wallImage, goal, emptyPic, broken);
-        this.rm = new readMap(json1, wallImage, goal, emptyPic, broken, yellow1, yellow2, yellow3, yellow4, yellow5, yellow6, yellow7, yellow8, yellow9, yellow10, yellow11, yellow12, yellow13, yellow14, yellow15, yellow16, red1, red2, red3, red4, red5, red6, red7, red8, red9, red10, red11, red12, red13, red14, red15, red16);
+        this.endScreen = new EndScreen(this.font);
+        this.loseScreen = new YouLose(this.font);
+        this.rm = new readMap(this.endScreen, json1, wallImage, goal, emptyPic, broken, yellow1, yellow2, yellow3, yellow4, yellow5, yellow6, yellow7, yellow8, yellow9, yellow10, yellow11, yellow12, yellow13, yellow14, yellow15, yellow16, red1, red2, red3, red4, red5, red6, red7, red8, red9, red10, red11, red12, red13, red14, red15, red16);
         mapTiles = rm.getMap();
         maparr = rm.getArr();
         playerPos = rm.getPlayArr();
@@ -170,9 +173,10 @@ public class App extends PApplet {
         mapstr = mapstr.replace('R' , ' ');
         mapstr = mapstr.replace('P' , ' ');
         //System.out.println();
-
+        this.timer = new Timer(this.loseScreen, this.rm, 250, 16, this.font, this.loadImage("src/main/resources/icons/clock.png"));
         this.lives = new Lives(this.rm, 150, 16, this.font, this.loadImage("src/main/resources/icons/player.png"));
-        this.player = new Player(this.lives, this.rm.getEnemyR(), this.rm.getEnemyY(), this.bomb, this.rm, playerPos[0], playerPos[1], this.font, this.loadImage("src/main/resources/player/player_left1.png"), this.loadImage("src/main/resources/player/player_left2.png"), this.loadImage("src/main/resources/player/player_left3.png"), this.loadImage("src/main/resources/player/player_left4.png"), this.loadImage("src/main/resources/player/player_right1.png"), this.loadImage("src/main/resources/player/player_right2.png"), this.loadImage("src/main/resources/player/player_right3.png"), this.loadImage("src/main/resources/player/player_right4.png"), this.loadImage("src/main/resources/player/player_up1.png"), this.loadImage("src/main/resources/player/player_up2.png"), this.loadImage("src/main/resources/player/player_up3.png"), this.loadImage("src/main/resources/player/player_up4.png"), this.loadImage("src/main/resources/player/player1.png"), this.loadImage("src/main/resources/player/player2.png"), this.loadImage("src/main/resources/player/player3.png"), this.loadImage("src/main/resources/player/player4.png"), mapstr);
+        this.player = new Player(this.timer, this.loseScreen, this.lives, this.rm.getEnemyR(), this.rm.getEnemyY(), this.bomb, this.rm, playerPos[0], playerPos[1], this.font, this.loadImage("src/main/resources/player/player_left1.png"), this.loadImage("src/main/resources/player/player_left2.png"), this.loadImage("src/main/resources/player/player_left3.png"), this.loadImage("src/main/resources/player/player_left4.png"), this.loadImage("src/main/resources/player/player_right1.png"), this.loadImage("src/main/resources/player/player_right2.png"), this.loadImage("src/main/resources/player/player_right3.png"), this.loadImage("src/main/resources/player/player_right4.png"), this.loadImage("src/main/resources/player/player_up1.png"), this.loadImage("src/main/resources/player/player_up2.png"), this.loadImage("src/main/resources/player/player_up3.png"), this.loadImage("src/main/resources/player/player_up4.png"), this.loadImage("src/main/resources/player/player1.png"), this.loadImage("src/main/resources/player/player2.png"), this.loadImage("src/main/resources/player/player3.png"), this.loadImage("src/main/resources/player/player4.png"), mapstr);
+        //this.timer = new Timer(this.rm, 250, 16, this.font, this.loadImage("src/main/resources/icons/clock.png"), getTime());        
         //this.player = new Player(playerPos[0], playerPos[1], this.loadImage("src/main/resources/player/player.gif"));
         /*
         if(rm.hasYEnemy() == true){
@@ -185,7 +189,7 @@ public class App extends PApplet {
             enemyRPos = rm.getEnemyRArr();
             this.enemyR = new RedEnemy(enemyRPos[0], enemyRPos[1], this.loadImage("src/main/resources/red_enemy/red_left1.png"), this.loadImage("src/main/resources/red_enemy/red_left2.png"), this.loadImage("src/main/resources/red_enemy/red_left3.png"), this.loadImage("src/main/resources/red_enemy/red_left4.png"), this.loadImage("src/main/resources/red_enemy/red_right1.png"), this.loadImage("src/main/resources/red_enemy/red_right2.png"), this.loadImage("src/main/resources/red_enemy/red_right3.png"), this.loadImage("src/main/resources/red_enemy/red_right4.png"), this.loadImage("src/main/resources/red_enemy/red_up1.png"), this.loadImage("src/main/resources/red_enemy/red_up2.png"), this.loadImage("src/main/resources/red_enemy/red_up3.png"), this.loadImage("src/main/resources/red_enemy/red_up4.png"), this.loadImage("src/main/resources/red_enemy/red_down1.png"), this.loadImage("src/main/resources/red_enemy/red_down2.png"), this.loadImage("src/main/resources/red_enemy/red_down3.png"), this.loadImage("src/main/resources/red_enemy/red_down4.png"), mapstr);
         }*/
-        this.timer = new Timer(this.rm, 250, 16, this.font, this.loadImage("src/main/resources/icons/clock.png"), getTime());
+        
         //this.timer = new Timer(250, 16, this.font, bombImage, getTime());
         //System.out.println(this.player.getPlayerTime());
         //this.bombs.add(new Bomb(250, 250, bombImage));
@@ -196,74 +200,84 @@ public class App extends PApplet {
         
         //this.timer = new Timer(250, 16, this.font, bombImage, getTime());
 
-        
+        if(this.endScreen.getEndGame() == true){
+            this.endScreen.tick();
+            this.rect(-1, -1, WIDTH + 2, HEIGHT + 2);
+            this.endScreen.draw(this);
+        }
+        else if(this.loseScreen.getLoseGame() == true){
+            this.loseScreen.tick();
+            this.rect(-1, -1, WIDTH + 2, HEIGHT + 2);
+            this.loseScreen.draw(this);
+        }        
         //this.bomb.tick();
-        //this.player.tick();
-        if(this.rm.getHasYEnemy() == true)
-            this.rm.getEnemyY().tick();
-        if(this.rm.getHasREnemy() == true)
-            this.rm.getEnemyR().tick();
-        for (int i=0; i<13; i++)
-            for (int j=0; j<15; j++)
-                this.mapTiles[i][j].tick();
+        else if(this.endScreen.getEndGame() == false){
+            //this.player.tick();
+            if((this.rm.getHasYEnemy() == true) && (this.rm.getEnemyY().getIfYEnemyDied() == false))
+                this.rm.getEnemyY().tick();
+            if((this.rm.getHasREnemy() == true) && (this.rm.getEnemyR().getIfREnemyDied() == false))
+                this.rm.getEnemyR().tick();
+            for (int i=0; i<13; i++)
+                for (int j=0; j<15; j++)
+                    this.mapTiles[i][j].tick();
 
-        this.timer.tick();
-        this.lives.tick();
-        if(this.bombAdded == true){
-            for (Bomb bombCurr : this.bombs) {
-                bombCurr.tick();
-                
-                //System.out.println(bombCurr.bombIndex());
-                //System.out.println("inside tickbomb");
-                //if(bombCurr.isExploded() == true)
-                    //this.bombs.remove(bombCurr.bombIndex());
-                //else {
-                    //this.bombs.remove(bombCurr.bombIndex());
-                //}
+            this.timer.tick();
+            this.lives.tick();
+            if(this.bombAdded == true){
+                for (Bomb bombCurr : this.bombs) {
+                    bombCurr.tick();
+                    
+                    //System.out.println(bombCurr.bombIndex());
+                    //System.out.println("inside tickbomb");
+                    //if(bombCurr.isExploded() == true)
+                        //this.bombs.remove(bombCurr.bombIndex());
+                    //else {
+                        //this.bombs.remove(bombCurr.bombIndex());
+                    //}
+                }
             }
-        }
-        this.player.tick();
-        this.rect(-1, -1, WIDTH + 2, HEIGHT + 2);
-        
-
-        
-        for (int i=0; i<13; i++)
-            for (int j=0; j<15; j++) 
-                this.mapTiles[i][j].draw(this);
-
-        //this.player.draw(this);
-        if(this.rm.getHasYEnemy() == true)
-            this.rm.getEnemyY().draw(this);
-        /*
-        if(hasREnemy == true)
-            this.enemyR.draw(this);
-        */
-        if(this.rm.getHasREnemy() == true)
-            this.rm.getEnemyR().draw(this);
-
-        this.timer.setTime(getTime());
-        this.timer.draw(this);
-        this.lives.draw(this);
-        if(this.bombAdded == true){
-            for (Bomb bombCurr : this.bombs) {
-                bombCurr.draw(this);
-                this.mapstrUpdated = bombCurr.stringUpdated();
-                //System.out.println(this.mapstrUpdated);
-            }
-        }
-        if(this.setBomb == true){
-            bombs.add(new Bomb(this.lives, this.player, this.rm, this.bombXCoords, this.bombYCoords, this.rm.getStringArr(), bombs.size(), bombImage, bombImage1, bombImage2, bombImage3, bombImage4, bombImage5, bombImage6, bombImage7, bombImage8, center, endBottom, endLeft, endRight, endTop, horizontal, vertical));
-            //System.out.println("size    ==    " + bombs.size());
-            this.bombAdded = true;
-            this.setBomb = false;
+            this.player.tick();
+            this.rect(-1, -1, WIDTH + 2, HEIGHT + 2);
             
+
+            
+            for (int i=0; i<13; i++)
+                for (int j=0; j<15; j++) 
+                    this.mapTiles[i][j].draw(this);
+
+            //this.player.draw(this);
+            if((this.rm.getHasYEnemy() == true) && (this.rm.getEnemyY().getIfYEnemyDied() == false))
+                this.rm.getEnemyY().draw(this);
+            /*
+            if(hasREnemy == true)
+                this.enemyR.draw(this);
+            */
+            if((this.rm.getHasREnemy() == true) && (this.rm.getEnemyR().getIfREnemyDied() == false))
+                this.rm.getEnemyR().draw(this);
+
+            //this.timer.setTime(getTime());
+            this.timer.draw(this);
+            this.lives.draw(this);
+            if(this.bombAdded == true){
+                for (Bomb bombCurr : this.bombs) {
+                    bombCurr.draw(this);
+                    this.mapstrUpdated = bombCurr.stringUpdated();
+                    //System.out.println(this.mapstrUpdated);
+                }
+            }
+            if(this.setBomb == true){
+                bombs.add(new Bomb(this.rm.getEnemyY(), this.rm.getEnemyR(), this.timer, this.loseScreen, this.lives, this.player, this.rm, this.bombXCoords, this.bombYCoords, this.rm.getStringArr(), bombs.size(), bombImage, bombImage1, bombImage2, bombImage3, bombImage4, bombImage5, bombImage6, bombImage7, bombImage8, center, endBottom, endLeft, endRight, endTop, horizontal, vertical));
+                //System.out.println("size    ==    " + bombs.size());
+                this.bombAdded = true;
+                this.setBomb = false;
+                
+            }
+            this.player.draw(this);
+            //this.timer.setTime(getTime());
+            //this.bomb.draw(this);
+            //System.out.println(getTime());
+            //this.rm.setMap(this.mapstrUpdated);
         }
-        this.player.draw(this);
-        //this.timer.setTime(getTime());
-        //this.bomb.draw(this);
-        //System.out.println(getTime());
-        //this.rm.setMap(this.mapstrUpdated);
-        
 
     }
 

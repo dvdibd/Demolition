@@ -8,17 +8,20 @@ public class Timer{
     private int x;
     private int y;
     private int baseTime;
-    private int time;
+    //private int time;
     private PImage sprite;
     private PFont font;
     private readMap rm2;
     private int timer;
     private boolean changed;
-    public Timer(readMap rm, int x, int y, PFont font, PImage sprite, int time) {
+    private YouLose loseScreen;
+    //public Timer(readMap rm, int x, int y, PFont font, PImage sprite, int time) {
+    public Timer(YouLose loseScreen, readMap rm, int x, int y, PFont font, PImage sprite) {
+        this.loseScreen = loseScreen;
         this.x = x;
         this.y = y;
         this.sprite = sprite;
-        this.time = time;
+        //this.time = time;
         this.font = font;
         this.rm2 = rm;
         this.baseTime = this.rm2.getLevelTime();
@@ -35,18 +38,28 @@ public class Timer{
             this.timer = 0;
             
         }
+        if((this.baseTime - getPlayerTime()) == 0)
+            this.loseScreen.endGame(true);
         //System.out.println(this.timer);
         this.timer++;
     }
-
+    /*
     public void setTime(int plTime) {
         this.time = plTime;
         //handles logic
         //System.out.println(text(char c, float x, float y));
     }
+    */
+    public void resetTime(boolean ifReset) {
+        if(ifReset == true) {
+            this.timer = 0;
+        }
+    }
+    /*
     public int getTime() {
         return this.time;
     }
+    */
     public int getPlayerTime() {
         //System.out.println(timer/60);
         return timer/60;

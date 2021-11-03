@@ -54,9 +54,13 @@ public class Player extends MapComp{
     private int rEnemyPosY;
     private RedEnemy rEnemy;
     private Lives lives;
+    private YouLose loseSend;
+    private Timer timerMain;
     //public Player(int x, int y, PImage sprite, char[][] arr) {
-    public Player(Lives lives, RedEnemy rEnemy, YellowEnemy yEnemy, Bomb bomb, readMap rm1, int x, int y, PFont font, PImage spriteL1, PImage spriteL2, PImage spriteL3, PImage spriteL4, PImage spriteR1, PImage spriteR2, PImage spriteR3, PImage spriteR4, PImage spriteU1, PImage spriteU2, PImage spriteU3, PImage spriteU4, PImage spriteP1, PImage spriteP2, PImage spriteP3, PImage spriteP4, String str1) {
+    public Player(Timer timer, YouLose loseSend, Lives lives, RedEnemy rEnemy, YellowEnemy yEnemy, Bomb bomb, readMap rm1, int x, int y, PFont font, PImage spriteL1, PImage spriteL2, PImage spriteL3, PImage spriteL4, PImage spriteR1, PImage spriteR2, PImage spriteR3, PImage spriteR4, PImage spriteU1, PImage spriteU2, PImage spriteU3, PImage spriteU4, PImage spriteP1, PImage spriteP2, PImage spriteP3, PImage spriteP4, String str1) {
     //public Player(int x, int y, PImage sprite) {
+        this.timerMain = timer;
+        this.loseSend = loseSend;
         this.lives = lives;
         this.rEnemy = rEnemy;
         this.yEnemyPosX = 0;
@@ -137,30 +141,43 @@ public class Player extends MapComp{
         int xMapPos = this.x / 32;
         int yMapPos = ((this.y + 17) / 32)-2;
         if(goalReached == false){
-            if(this.rm1.getHasYEnemy() == true){
+            if((this.rm1.getHasYEnemy() == true) && (this.rm1.getEnemyY().getIfYEnemyDied() == false)){
                 this.yEnemyPosX = this.rm1.getEnemyY().getXCoOrdsYEnemy();
                 this.yEnemyPosY = this.rm1.getEnemyY().getYCoOrdsYEnemy();
                 if((this.yEnemyPosX == this.x) && (this.yEnemyPosY == this.y)){
                     this.lives.changeLives();
-                    rm1.setParaForLevel();
-                    setPlayerMap(rm1.getStringArr());
-                    setPlayerPosition(rm1.getPlayArr());
-                    this.moveType = 0;
+                    
+                    if(this.lives.getLives() > 0) {
+                        rm1.setParaForLevel();
+                        setPlayerMap(rm1.getStringArr());
+                        setPlayerPosition(rm1.getPlayArr());
+                        //this.timerMain.resetTime(true);
+                        this.moveType = 0;
+                    } else {
+                        this.loseSend.endGame(true);
+                    }
                 }
                 //System.out.println("YENEMY XXXX" + this.yEnemyPosX);
                 //System.out.println("YENEMY YYYY" + this.yEnemyPosY);
                 //System.out.println("player XXXX" + this.x);
                 //System.out.println("player YYYY" + this.y);
             }
-            if(this.rm1.getHasREnemy() == true){
+            if((this.rm1.getHasREnemy() == true) && (this.rm1.getEnemyR().getIfREnemyDied() == false)){
                 this.rEnemyPosX = this.rm1.getEnemyR().getXCoOrdsREnemy();
                 this.rEnemyPosY = this.rm1.getEnemyR().getYCoOrdsREnemy();
                 if((this.rEnemyPosX == this.x) && (this.rEnemyPosY == this.y)){
+                    //this.lives.changeLives();
                     this.lives.changeLives();
-                    rm1.setParaForLevel();
-                    setPlayerMap(rm1.getStringArr());
-                    setPlayerPosition(rm1.getPlayArr());
-                    this.moveType = 0;
+                    
+                    if(this.lives.getLives() > 0){
+                        rm1.setParaForLevel();
+                        setPlayerMap(rm1.getStringArr());
+                        setPlayerPosition(rm1.getPlayArr());
+                        //this.timerMain.resetTime(true);
+                        this.moveType = 0;
+                    } else {
+                        this.loseSend.endGame(true);
+                    }
                 }
                 //System.out.println("YENEMY XXXX" + this.yEnemyPosX);
                 //System.out.println("YENEMY YYYY" + this.yEnemyPosY);
@@ -188,16 +205,18 @@ public class Player extends MapComp{
                     }*/
                     if(arr[yMapPos][xMapPos + 1] == 'G'){
                         System.out.println("GOALLLLLLLLLLL");
+                        
                         rm1.setPlayerLevel(true);
-                        rm1.setParaForLevel();
-                        setPlayerMap(rm1.getStringArr());
-                        setPlayerPosition(rm1.getPlayArr());
+                        if(rm1.setEnd() == false) {
+                            rm1.setParaForLevel();
+                            setPlayerMap(rm1.getStringArr());
+                            setPlayerPosition(rm1.getPlayArr());
 
-                        //this.bomb.setPlayerMap(rm1.getStringArr());
-                        goalReached = true;
+                            //this.bomb.setPlayerMap(rm1.getStringArr());
+                            goalReached = true;
+                        }
                     }
                 }
-
             } else if(this.moveType == 2) {
                 if((arr[yMapPos][xMapPos - 1] != 'W') & (arr[yMapPos][xMapPos - 1] != 'B') & ((xMapPos - 1) > 0) ){
                     this.x += this.move;
@@ -220,11 +239,13 @@ public class Player extends MapComp{
                     if(arr[yMapPos][xMapPos - 1] == 'G'){
                         System.out.println("GOALLLLLLLLLLL");
                         rm1.setPlayerLevel(true);
-                        rm1.setParaForLevel();
-                        setPlayerMap(rm1.getStringArr());
-                        setPlayerPosition(rm1.getPlayArr());
-                        //this.bomb.setPlayerMap(rm1.getStringArr());
-                        goalReached = true;
+                        if(rm1.setEnd() == false) {
+                            rm1.setParaForLevel();
+                            setPlayerMap(rm1.getStringArr());
+                            setPlayerPosition(rm1.getPlayArr());
+                            //this.bomb.setPlayerMap(rm1.getStringArr());
+                            goalReached = true;
+                        }
                     }
                 }
             }else if(this.moveType == 3) {
@@ -249,11 +270,13 @@ public class Player extends MapComp{
                     if(arr[yMapPos + 1][xMapPos] == 'G') {
                         System.out.println("GOALLLLLLLLLLL");
                         rm1.setPlayerLevel(true);
-                        rm1.setParaForLevel();
-                        setPlayerMap(rm1.getStringArr());
-                        setPlayerPosition(rm1.getPlayArr());
-                        //this.bomb.setPlayerMap(rm1.getStringArr());
-                        goalReached = true;
+                        if(rm1.setEnd() == false) {
+                            rm1.setParaForLevel();
+                            setPlayerMap(rm1.getStringArr());
+                            setPlayerPosition(rm1.getPlayArr());
+                            //this.bomb.setPlayerMap(rm1.getStringArr());
+                            goalReached = true;
+                        }
                     }
                 }
             }else if(this.moveType == 4) {
@@ -278,11 +301,13 @@ public class Player extends MapComp{
                     if(arr[yMapPos - 1][xMapPos] == 'G') {
                         System.out.println("GOALLLLLLLLLLL");
                         rm1.setPlayerLevel(true);
-                        rm1.setParaForLevel();
-                        setPlayerMap(rm1.getStringArr());
-                        setPlayerPosition(rm1.getPlayArr());
-                        //this.bomb.setPlayerMap(rm1.getStringArr());
-                        goalReached = true;
+                        if(rm1.setEnd() == false) {
+                            rm1.setParaForLevel();
+                            setPlayerMap(rm1.getStringArr());
+                            setPlayerPosition(rm1.getPlayArr());
+                            //this.bomb.setPlayerMap(rm1.getStringArr());
+                            goalReached = true;
+                        }
                     }
                 }
             }
